@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CachedImageLoader.Android", "src\FishAngler.CachedImageLoader.Android\CachedImageLoader.Android.csproj", "{FEA9AF71-867E-4C32-BBAA-D236E906091B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CachedImageLoader", "src\FishAngler.CachedImageLoader\CachedImageLoader.csproj", "{9F6026D8-554C-4F15-829E-14F20DFAAFDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "examples\Android\Example.csproj", "{4E1879E5-9D18-4009-9A9B-DF1748387C66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheManager.Tests", "Test\CacheManager.Tests\CacheManager.Tests.csproj", "{966F63B7-82A0-49A3-A1A2-D75C7B0B5150}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEA9AF71-867E-4C32-BBAA-D236E906091B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA9AF71-867E-4C32-BBAA-D236E906091B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEA9AF71-867E-4C32-BBAA-D236E906091B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEA9AF71-867E-4C32-BBAA-D236E906091B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F6026D8-554C-4F15-829E-14F20DFAAFDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F6026D8-554C-4F15-829E-14F20DFAAFDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F6026D8-554C-4F15-829E-14F20DFAAFDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F6026D8-554C-4F15-829E-14F20DFAAFDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E1879E5-9D18-4009-9A9B-DF1748387C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E1879E5-9D18-4009-9A9B-DF1748387C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E1879E5-9D18-4009-9A9B-DF1748387C66}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4E1879E5-9D18-4009-9A9B-DF1748387C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E1879E5-9D18-4009-9A9B-DF1748387C66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E1879E5-9D18-4009-9A9B-DF1748387C66}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{966F63B7-82A0-49A3-A1A2-D75C7B0B5150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{966F63B7-82A0-49A3-A1A2-D75C7B0B5150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{966F63B7-82A0-49A3-A1A2-D75C7B0B5150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{966F63B7-82A0-49A3-A1A2-D75C7B0B5150}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

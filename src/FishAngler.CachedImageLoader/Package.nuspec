@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>FishAngler.CachedImageLoader</id>
+    <version>0.9.0-alpha01</version>
+    <authors>FishAngler</authors>
+    <owners>FishAngler</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/FishAngler</projectUrl>
+    <iconUrl>https://avatars1.githubusercontent.com/u/20560240?v=3&#38;s=64</iconUrl>
+    <description>Common Implementation for FishAngler Cached Image Loader</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags></tags>
+    <dependencies>
+      <dependency id="FishAngler.Shared" version="0.9.0-alpha01" />
+      <dependency id="FishAngler.CachedImageLoader" version="0.9.0-alpha01" />
+      <dependency id="Newtonsoft.Json" version="9.0.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\release\*.dll" target="lib\portable-net45+wp80+win8+wpa81" />
+  </files>
+</package>
