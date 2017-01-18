@@ -27,7 +27,7 @@ namespace FishAngler.CachedImageLoader.Droid
         {
             var cacheDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), directoryName);
 
-            var created = true;
+            var created = false;
             var attempts = 0;
             while (attempts < 3 && !created)
             {

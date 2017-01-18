@@ -54,7 +54,7 @@ namespace FishAngler.CachedImageLoader.Services
                                     using (var client = new HttpClient())
                                     {
                                         var start = DateTime.Now;
-                                        var uri = _settings.UriRewriteFunction(media.MediaUri, _settings, width, null);
+                                        var uri = _settings.UriRewriteFunction == null ? media.MediaUri : _settings.UriRewriteFunction(media.MediaUri, _settings, width, null);
                                         var imageBytes = await client.GetByteArrayAsync(uri);
                                         _cacheManager.AddCachedFile(media, imageBytes);
                                         _cacheManager.AddTraceMessage(CacheEventTraceMessage.Create("Downloaded file: " + uri, DateTime.Now - start));
@@ -98,7 +98,7 @@ namespace FishAngler.CachedImageLoader.Services
             return uri;
         }
 
-        public async Task<byte[]> GetImageBytes(RemoteMedia media, MediaSize containerSize)
+        public async Task<byte[]> GetImageBytes(RemoteMedia media, MediaSize containerSize, bool callServerSide = true)
         {
             if (_cacheManager.HasCachedFile(media))
             {
@@ -107,7 +107,7 @@ namespace FishAngler.CachedImageLoader.Services
                     return bytes;
             }
 
-            var uri = _settings.UriRewriteFunction(media.MediaUri, _settings, media.Size.Width, media.Size.Height);
+            var uri = (_settings.UriRewriteFunction == null || !callServerSide) ? media.MediaUri : _settings.UriRewriteFunction(media.MediaUri, _settings, media.Size.Width, media.Size.Height);
 
             var attempts = 0;
             while (attempts++ < 3)

@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>FishAngler.CachedImageLoader</id>
-    <version>0.9.0-alpha03</version>
+    <version>0.9.0-alpha09</version>
     <authors>FishAngler</authors>
     <owners>FishAngler</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

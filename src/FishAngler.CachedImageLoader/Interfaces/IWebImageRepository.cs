@@ -9,6 +9,6 @@ namespace FishAngler.CachedImageLoader.Interfaces
     {
         void PreloadImagesInBackground(ObservableCollection<RemoteMedia> feedItems, int width);
 
-        Task<byte[]> GetImageBytes(RemoteMedia media, MediaSize containerSize);
+        Task<byte[]> GetImageBytes(RemoteMedia media, MediaSize containerSize, bool callRewriteFunction = true);
     }
 }
