@@ -22,7 +22,12 @@ namespace FishAngler.CachedImageLoader.Usage
             {
                 return new CacheSettings()
                 {
-                    ImageQuality = 60
+                    ImageQuality = 60,
+                    PruneAfterDays = 30,
+                    UriRewriteFunction = (string uri, CacheSettings settings, int? width, int? height) =>
+                    {
+                        return uri;
+                    }                    
                 };
             }
         }
