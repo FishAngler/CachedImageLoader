@@ -16,6 +16,7 @@ using FishAngler.CachedImageLoader.Services;
 using FishAngler.CachedImageLoader.Droid;
 using FishAngler.CachedImageLoader.Models;
 using FishAngler.Shared.Models.Imaging;
+using FishAngler.CachedImageLoader.Usage;
 
 namespace FishAngler.CachedImageLoader.Example
 {
@@ -116,6 +117,9 @@ namespace FishAngler.CachedImageLoader.Example
             listLayoutContainer.SetBackgroundColor(global::Android.Graphics.Color.Black);
 
             _settings = Usage.CacheSettings.Default;
+
+            _settings.UriRewriteFunction = UriRewrite;
+
             var fileManager = new BasicFileManager();
             var cacheFileManager = new CacheFileManager(fileManager);            
             _cacheManager = new CacheManager(cacheFileManager, _settings);
@@ -135,6 +139,23 @@ namespace FishAngler.CachedImageLoader.Example
             _updateStatsTimer = new Timer((state) => RefreshStats(state), null, 0, 2000);
 
             AddContentView(parentLayoutContainer, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
+        }
+
+        public string UriRewrite(string uri, CacheSettings settings, int? width, int? height)
+        {
+            uri = uri + $"?quality={_settings.ImageQuality}";
+
+            if (width.HasValue)
+            {
+                uri += $"&width={width}";
+            }
+
+            if (height.HasValue)
+            {
+                uri += $"&height={height}";
+            }
+
+            return uri;
         }
 
         private void PreloadFeed()

@@ -1,5 +1,6 @@
 ﻿using FishAngler.CachedImageLoader.Interfaces;
 using FishAngler.CachedImageLoader.Models;
+using FishAngler.CachedImageLoader.Usage;
 using FishAngler.Shared.Models.Imaging;
 using System;
 using System.Collections.ObjectModel;
@@ -53,7 +54,7 @@ namespace FishAngler.CachedImageLoader.Services
                                     using (var client = new HttpClient())
                                     {
                                         var start = DateTime.Now;
-                                        var uri = GetDownloadUrl(media, width);
+                                        var uri = _settings.UriRewriteFunction(media.MediaUri, _settings, width, null);
                                         var imageBytes = await client.GetByteArrayAsync(uri);
                                         _cacheManager.AddCachedFile(media, imageBytes);
                                         _cacheManager.AddTraceMessage(CacheEventTraceMessage.Create("Downloaded file: " + uri, DateTime.Now - start));
@@ -80,7 +81,7 @@ namespace FishAngler.CachedImageLoader.Services
             });
         }
 
-        private string GetDownloadUrl(RemoteMedia media, int? width = 0, int? height = 0)
+        private string GetDownloadUrl(RemoteMedia media,  int? width = 0, int? height = 0)
         {
             var uri = media.MediaUri + $"?quality={_settings.ImageQuality}";
 
@@ -106,12 +107,13 @@ namespace FishAngler.CachedImageLoader.Services
                     return bytes;
             }
 
+            var uri = _settings.UriRewriteFunction(media.MediaUri, _settings, media.Size.Width, media.Size.Height);
+
             var attempts = 0;
             while (attempts++ < 3)
             {
                 try
-                {
-                    var uri = GetDownloadUrl(media, containerSize.Width, containerSize.Height);
+                {                    
                     using (var client = new HttpClient())
                     {
                         var imageBytes = await client.GetByteArrayAsync(uri);
@@ -121,9 +123,9 @@ namespace FishAngler.CachedImageLoader.Services
                         return imageBytes;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    _cacheManager.AddTraceMessage(CacheEventTraceMessage.CreateError(ex, "Error downloading media: " + uri));
                 }
             }
 

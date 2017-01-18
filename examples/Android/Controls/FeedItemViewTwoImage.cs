@@ -22,6 +22,8 @@ namespace FishAngler.CachedImageLoader.Example.Controls
         CachedImageView _feedImageView2;
         CachedImageView _feedImageView3;
 
+        bool _diagnostics = true;
+
         public FeedItemView(Context ctx, ICacheManager cacheManager, Usage.CacheSettings settings) : base(ctx)
         {
             _settings = settings;
@@ -45,9 +47,9 @@ namespace FishAngler.CachedImageLoader.Example.Controls
 
             container.SetBackgroundColor(global::Android.Graphics.Color.White);
             
-            _feedImageView1 = new CachedImageView(ctx, new WebImageRepository(cacheManager, _settings), cacheManager, _settings);
-            _feedImageView2 = new CachedImageView(ctx, new WebImageRepository(cacheManager, _settings), cacheManager, _settings);
-            _feedImageView3 = new CachedImageView(ctx, new WebImageRepository(cacheManager, _settings), cacheManager, _settings);
+            _feedImageView1 = new CachedImageView(ctx, new WebImageRepository(cacheManager, _settings), cacheManager, _settings) { Diagnostics = _diagnostics };
+            _feedImageView2 = new CachedImageView(ctx, new WebImageRepository(cacheManager, _settings), cacheManager, _settings) { Diagnostics = _diagnostics };
+            _feedImageView3 = new CachedImageView(ctx, new WebImageRepository(cacheManager, _settings), cacheManager, _settings) { Diagnostics = _diagnostics };
 
             _imageContainer = new LinearLayout(ctx) { LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent) };
             _twoImageContainer = new LinearLayout(ctx) { LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent) };

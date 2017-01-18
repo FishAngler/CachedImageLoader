@@ -16,11 +16,16 @@ namespace FishAngler.CachedImageLoader.Droid.Controls
         Bitmap _bmp;
         Context _ctx;
         ImageView _imageView;
-        
+
+        ProgressBar _spinner;
+
         LinearLayout _infoContainer;
         TextView _info;
         TextView _timings;
         TextView _imageSize;
+
+        public bool Diagnostics { get; set; }
+
 
         public CachedImageView(Context ctx, IWebImageRepository imageRepository, ICacheManager cacheManager, Usage.CacheSettings settings) : base(ctx)
         {
@@ -65,6 +70,8 @@ namespace FishAngler.CachedImageLoader.Droid.Controls
             _infoContainer.AddView(_timings);
             _infoContainer.AddView(_imageSize);
 
+            Diagnostics = false;           
+
             AddView(_infoContainer);
         }
 
@@ -72,6 +79,9 @@ namespace FishAngler.CachedImageLoader.Droid.Controls
         {
             try
             {
+
+                _infoContainer.Visibility = Diagnostics ? ViewStates.Visible : ViewStates.Gone;
+
                 var started = DateTime.Now;
                 _imageView.SetImageBitmap(null);
                 _info.Text = "STARTING...";

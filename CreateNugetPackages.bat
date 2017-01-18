@@ -1,0 +1,2 @@
+nuget pack .\src\FishAngler.CachedImageLoader\Package.nuspec -OutputDirectory D:\LocalPackages\FishAngler.CachedImageLoader
+nuget pack .\src\FishAngler.CachedImageLoader.Android\Package.nuspec -OutputDirectory D:\LocalPackages\FishAngler.CachedImageLoader.Droid
