@@ -32,7 +32,7 @@ namespace FishAngler.CachedImageLoader.Cache
         {
             lock (_cacheDbLocker)
             {
-                return CacheDB.Where(itm => itm.Uri.ToLower() == url.ToLower()).FirstOrDefault();
+                return CacheDB.Where(itm => String.Compare(itm.Uri, url, StringComparison.OrdinalIgnoreCase) == 0).FirstOrDefault();
             }
         }
 

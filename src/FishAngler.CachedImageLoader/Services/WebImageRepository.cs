@@ -17,6 +17,7 @@ namespace FishAngler.CachedImageLoader.Services
 
         ICacheManager _cacheManager;
         Usage.CacheSettings _settings;
+        HttpClient _client;
 
 
         CancellationTokenSource _preloadFeedCancelToken;
@@ -25,6 +26,7 @@ namespace FishAngler.CachedImageLoader.Services
         {
             _cacheManager = cacheManager;
             _settings = settings;
+            _client = new HttpClient();
         }
 
         public void PreloadImagesInBackground(ObservableCollection<RemoteMedia> mediaItems, int width)
@@ -35,7 +37,7 @@ namespace FishAngler.CachedImageLoader.Services
                     _preloadFeedCancelToken.Cancel();
 
                 _preloadFeedCancelToken = new CancellationTokenSource();
-            } 
+            }
 
             Task.Run(async () =>
             {
@@ -68,12 +70,12 @@ namespace FishAngler.CachedImageLoader.Services
                                 }
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             Debug.WriteLine(ex);
                         }
                     }
-                    if(_preloadFeedCancelToken.IsCancellationRequested)
+                    if (_preloadFeedCancelToken.IsCancellationRequested)
                     {
                         break;
                     }
@@ -81,7 +83,7 @@ namespace FishAngler.CachedImageLoader.Services
             });
         }
 
-        private string GetDownloadUrl(RemoteMedia media,  int? width = 0, int? height = 0)
+        private string GetDownloadUrl(RemoteMedia media, int? width = 0, int? height = 0)
         {
             var uri = media.MediaUri + $"?quality={_settings.ImageQuality}";
 
@@ -98,6 +100,9 @@ namespace FishAngler.CachedImageLoader.Services
             return uri;
         }
 
+
+
+
         public async Task<byte[]> GetImageBytes(RemoteMedia media, MediaSize containerSize, bool callServerSide = true)
         {
             if (_cacheManager.HasCachedFile(media))
@@ -113,15 +118,17 @@ namespace FishAngler.CachedImageLoader.Services
             while (attempts++ < 3)
             {
                 try
-                {                    
-                    using (var client = new HttpClient())
-                    {
-                        var imageBytes = await client.GetByteArrayAsync(uri);
-                        _cacheManager.AddCachedFile(media, imageBytes);
-                        Usage.Statistics.Instance.AddBytesRequested(imageBytes.Length);
+                {
+                    _client.CancelPendingRequests();
+                    var imageBytes = await _client.GetByteArrayAsync(uri);
+                    _cacheManager.AddCachedFile(media, imageBytes);
+                    Usage.Statistics.Instance.AddBytesRequested(imageBytes.Length);
 
-                        return imageBytes;
-                    }
+                    return imageBytes;
+                }
+                catch(TaskCanceledException)
+                {
+                    return null;
                 }
                 catch (Exception ex)
                 {
