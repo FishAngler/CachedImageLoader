@@ -108,6 +108,8 @@ namespace FishAngler.CachedImageLoader.Services
         {
             var bldr = new StringBuilder();
 
+            _client.CancelPendingRequests();
+
             if (_cacheManager.HasCachedFile(media))
             {
                 var bytes = _cacheManager.GetCachedFile(media);
@@ -121,8 +123,7 @@ namespace FishAngler.CachedImageLoader.Services
             while (attempts++ < 3)
             {
                 try
-                {
-                    _client.CancelPendingRequests();
+                {                    
                     var imageBytes = await _client.GetByteArrayAsync(uri);
                     _cacheManager.AddCachedFile(media, imageBytes);
                     Usage.Statistics.Instance.AddBytesRequested(imageBytes.Length);

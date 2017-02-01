@@ -17,8 +17,6 @@ namespace FishAngler.CachedImageLoader.Droid.Controls
         Context _ctx;
         ImageView _imageView;
 
-        ProgressBar _spinner;
-
         LinearLayout _infoContainer;
         TextView _info;
         TextView _timings;
