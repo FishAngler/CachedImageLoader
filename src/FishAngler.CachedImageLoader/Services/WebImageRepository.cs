@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -103,13 +104,15 @@ namespace FishAngler.CachedImageLoader.Services
 
 
 
-        public async Task<byte[]> GetImageBytes(RemoteMedia media, MediaSize containerSize, bool callServerSide = true)
+        public async Task<RequestBytesResult> GetImageBytesAsync(RemoteMedia media, MediaSize containerSize, bool callServerSide = true)
         {
+            var bldr = new StringBuilder();
+
             if (_cacheManager.HasCachedFile(media))
             {
                 var bytes = _cacheManager.GetCachedFile(media);
                 if (bytes != null)
-                    return bytes;
+                    return new RequestBytesResult(RequestBytesResult.ResponseStatus.Success, true, bytes);
             }
 
             var uri = (_settings.UriRewriteFunction == null || !callServerSide) ? media.MediaUri : _settings.UriRewriteFunction(media.MediaUri, _settings, media.Size.Width, media.Size.Height);
@@ -124,19 +127,20 @@ namespace FishAngler.CachedImageLoader.Services
                     _cacheManager.AddCachedFile(media, imageBytes);
                     Usage.Statistics.Instance.AddBytesRequested(imageBytes.Length);
 
-                    return imageBytes;
+                    return new RequestBytesResult(RequestBytesResult.ResponseStatus.Success, false, imageBytes);
                 }
                 catch(TaskCanceledException)
                 {
-                    return null;
+                    return new RequestBytesResult(RequestBytesResult.ResponseStatus.Cancelled, false);
                 }
                 catch (Exception ex)
                 {
-                    _cacheManager.AddTraceMessage(CacheEventTraceMessage.CreateError(ex, "Error downloading media: " + uri));
+                    bldr.AppendLine(ex.Message);
+                    _cacheManager.AddTraceMessage(CacheEventTraceMessage.CreateError(ex, "Error downloading media: " + uri));                    
                 }
             }
 
-            return null;
+            return new RequestBytesResult(RequestBytesResult.ResponseStatus.Failed, false, errorMessage: "Too many retries: " + bldr.ToString());
         }
     }
 }

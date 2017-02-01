@@ -43,6 +43,7 @@
     <Compile Include="Interfaces\ICacheFileManager.cs" />
     <Compile Include="Interfaces\IWebImageRepository.cs" />
     <Compile Include="Models\CachedImage.cs" />
+    <Compile Include="Models\RequestBytesResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\WebImageRepository.cs" />
     <Compile Include="Usage\CacheSettings.cs" />
@@ -59,7 +60,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Package.nuspec" />
+    <None Include="Package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

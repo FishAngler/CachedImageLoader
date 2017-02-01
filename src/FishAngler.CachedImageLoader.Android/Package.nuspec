@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>FishAngler.CachedImageLoader.Droid</id>
-    <version>0.9.0-alpha10</version>
+    <version>0.9.0-alpha11</version>
     <authors>FishAngler</authors>
     <owners>FishAngler</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

@@ -103,11 +103,11 @@ namespace FishAngler.CachedImageLoader.Droid.Controls
 
                 var cachedFile = _cacheManager.HasCachedFile(media);
 
-                var imageBytes = await _imageRepository.GetImageBytes(media, new  MediaSize() { Width = this.LayoutParameters.Width, Height = this.LayoutParameters.Height });
+                var response = await _imageRepository.GetImageBytesAsync(media, new  MediaSize() { Width = this.LayoutParameters.Width, Height = this.LayoutParameters.Height });
                 var downloadedDuration = DateTime.Now - started;
                 started = DateTime.Now;
 
-                if (imageBytes == null)
+                if (response.Status == Models.RequestBytesResult.ResponseStatus.Failed)
                 {
                     using (var handler = new Handler(Looper.MainLooper))
                     {
@@ -118,9 +118,20 @@ namespace FishAngler.CachedImageLoader.Droid.Controls
                         });
                     }
                 }
+                else if(response.Status == Models.RequestBytesResult.ResponseStatus.Cancelled)
+                {
+                    using (var handler = new Handler(Looper.MainLooper))
+                    {
+                        handler.Post(() =>
+                        {
+                            _info.Text = "Cancelled";
+                            _timings.Text = media.MediaUri;
+                        });
+                    }
+                }
                 else
                 {
-                    _bmp = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    _bmp = BitmapFactory.DecodeByteArray(response.Buffer, 0, response.Buffer.Length);
                     Usage.Statistics.Instance.AddBitmapBytesLoaded(_bmp.ByteCount);
 
                     _imageView.SetImageBitmap(_bmp);
@@ -131,7 +142,7 @@ namespace FishAngler.CachedImageLoader.Droid.Controls
                     _timings.Text += String.Format("in {0:0.000} sec, ", downloadedDuration.TotalSeconds);
                     _timings.Text += String.Format(" Rendered in {0:0.}ms", (DateTime.Now - started).TotalMilliseconds);
 
-                    _info.Text = String.Format("File Size: {0:0.0}kb  Bitmap Size: {1:0.0}mb ", imageBytes.Length / 1024.0f, _bmp.ByteCount / (1024 * 1024.0));
+                    _info.Text = String.Format("File Size: {0:0.0}kb  Bitmap Size: {1:0.0}mb ", response.Buffer.Length / 1024.0f, _bmp.ByteCount / (1024 * 1024.0));
                     _imageSize.Text = String.Format("Image Size: Original: {0}x{1}px  Rendered: {2}x{3}px ", media.Size.Width, media.Size.Height, this.LayoutParameters.Width, this.LayoutParameters.Height);
                 }
 
